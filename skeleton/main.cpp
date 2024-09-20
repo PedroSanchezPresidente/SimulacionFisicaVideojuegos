@@ -30,6 +30,11 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
+RenderItem* esfera;
+RenderItem* esferaX;
+RenderItem* esferaY;
+RenderItem* esferaZ;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -54,6 +59,35 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	//Geometria de esfera
+	PxSphereGeometry s;
+	s.radius = 1;
+
+	//Generacion de las 4 esferas
+	esfera = new RenderItem;
+	esfera->transform =new PxTransform(PxVec3(0,0,0));
+	esfera->color = Vector4(1.0,1.0,1.0,1.0);
+	esfera->shape = CreateShape(s);
+	RegisterRenderItem(esfera);
+
+	esferaX = new RenderItem;
+	esferaX->transform = new PxTransform(PxVec3(10, 0, 0));
+	esferaX->color = Vector4(1.0, 0, 0, 1.0);
+	esferaX->shape = CreateShape(s);
+	RegisterRenderItem(esferaX);
+
+	esferaY = new RenderItem;
+	esferaY->transform = new PxTransform(PxVec3(0, 10, 0));
+	esferaY->color = Vector4(0, 1.0, 0, 1.0);
+	esferaY->shape = CreateShape(s);
+	RegisterRenderItem(esferaY); 
+
+	esferaZ = new RenderItem;
+	esferaZ->transform = new PxTransform(PxVec3(0, 0, 10));
+	esferaZ->color = Vector4(0, 0, 1.0, 1.0);
+	esferaZ->shape = CreateShape(s);
+	RegisterRenderItem(esferaZ);
 	}
 
 
@@ -84,6 +118,8 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+
+	DeregisterRenderItem(esfera);
 	}
 
 // Function called when a key is pressed
