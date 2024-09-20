@@ -7,6 +7,7 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
+#include "Vector3D.h"
 
 #include <iostream>
 
@@ -72,19 +73,23 @@ void initPhysics(bool interactive)
 	RegisterRenderItem(esfera);
 
 	esferaX = new RenderItem;
-	esferaX->transform = new PxTransform(PxVec3(10, 0, 0));
+	Vector3D v1(10, 0, 0);
+	esferaX->transform = new PxTransform(PxVec3(v1.x, v1.y, v1.z));
 	esferaX->color = Vector4(1.0, 0, 0, 1.0);
 	esferaX->shape = CreateShape(s);
 	RegisterRenderItem(esferaX);
 
 	esferaY = new RenderItem;
-	esferaY->transform = new PxTransform(PxVec3(0, 10, 0));
+	Vector3D v2(0, 10, 0);
+	esferaY->transform = new PxTransform(PxVec3(v2.x, v2.y, v2.z));
 	esferaY->color = Vector4(0, 1.0, 0, 1.0);
 	esferaY->shape = CreateShape(s);
 	RegisterRenderItem(esferaY); 
 
 	esferaZ = new RenderItem;
-	esferaZ->transform = new PxTransform(PxVec3(0, 0, 10));
+	Vector3D v3 = v1 * v2;
+	v3 = v3.normalize() * 10;
+	esferaZ->transform = new PxTransform(PxVec3(v3.x, v3.y, v3.z));
 	esferaZ->color = Vector4(0, 0, 1.0, 1.0);
 	esferaZ->shape = CreateShape(s);
 	RegisterRenderItem(esferaZ);
