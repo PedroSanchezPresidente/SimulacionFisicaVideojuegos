@@ -125,6 +125,9 @@ void cleanupPhysics(bool interactive)
 	gFoundation->release();
 
 	DeregisterRenderItem(esfera);
+	DeregisterRenderItem(esferaX);
+	DeregisterRenderItem(esferaY);
+	DeregisterRenderItem(esferaZ);
 	}
 
 // Function called when a key is pressed
