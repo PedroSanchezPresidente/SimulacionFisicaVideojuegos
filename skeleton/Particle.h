@@ -3,11 +3,12 @@
 #include "RenderUtils.hpp"
 
 using namespace physx;
+#define VERLET
 
 class Particle
 {
 public:
-	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acc, float Dumpling) : acc(Acc), vel(Vel), pose(Pos), dumpling(Dumpling) {
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acc, float Dumpling = 0.9) : acc(Acc), vel(Vel), pose(Pos), dumpling(Dumpling) {
 		renderItem = new RenderItem;
 		PxSphereGeometry s;
 		s.radius = 1;
