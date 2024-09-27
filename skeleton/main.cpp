@@ -8,6 +8,7 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 #include "Vector3D.h"
+#include "Particle.h"
 
 #include <iostream>
 
@@ -36,6 +37,8 @@ RenderItem* esferaX;
 RenderItem* esferaY;
 RenderItem* esferaZ;
 
+Particle* particle;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -46,9 +49,9 @@ void initPhysics(bool interactive)
 
 	gPvd = PxCreatePvd(*gFoundation);
 	PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
-	gPvd->connect(*transport,PxPvdInstrumentationFlag::eALL);
+	gPvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
 
-	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
+	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
@@ -66,11 +69,11 @@ void initPhysics(bool interactive)
 	s.radius = 1;
 
 	//Generacion de las 4 esferas
-	esfera = new RenderItem;
-	esfera->transform =new PxTransform(PxVec3(0,0,0));
-	esfera->color = Vector4(1.0,1.0,1.0,1.0);
+	/*esfera = new RenderItem;
+	esfera->transform = new PxTransform(PxVec3(0, 0, 0));
+	esfera->color = Vector4(1.0, 1.0, 1.0, 1.0);
 	esfera->shape = CreateShape(s);
-	RegisterRenderItem(esfera);
+	RegisterRenderItem(esfera);*/
 
 	esferaX = new RenderItem;
 	Vector3D v1(10, 0, 0);
@@ -84,7 +87,7 @@ void initPhysics(bool interactive)
 	esferaY->transform = new PxTransform(PxVec3(v2.x, v2.y, v2.z));
 	esferaY->color = Vector4(0, 1.0, 0, 1.0);
 	esferaY->shape = CreateShape(s);
-	RegisterRenderItem(esferaY); 
+	RegisterRenderItem(esferaY);
 
 	esferaZ = new RenderItem;
 	Vector3D v3 = v1 * v2;
@@ -93,6 +96,8 @@ void initPhysics(bool interactive)
 	esferaZ->color = Vector4(0, 0, 1.0, 1.0);
 	esferaZ->shape = CreateShape(s);
 	RegisterRenderItem(esferaZ);
+
+	particle = new Particle(Vector3(0, 0, 0), Vector3(0,1,0));
 	}
 
 
@@ -105,6 +110,8 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	particle->integrade(t);
 }
 
 // Function to clean data
@@ -124,10 +131,12 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	DeregisterRenderItem(esfera);
+	//DeregisterRenderItem(esfera);
 	DeregisterRenderItem(esferaX);
 	DeregisterRenderItem(esferaY);
 	DeregisterRenderItem(esferaZ);
+
+	delete particle;
 	}
 
 // Function called when a key is pressed
