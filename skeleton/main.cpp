@@ -97,7 +97,7 @@ void initPhysics(bool interactive)
 	esferaZ->shape = CreateShape(s);
 	RegisterRenderItem(esferaZ);
 
-	particle = new Particle(Vector3(0, 0, 0), Vector3(0,1,0), Vector3(0,1,0));
+	particle = new Particle(Vector3(0, 0, 0), Vector3(0,1,0), Vector3(0,1,0), 0.9);
 	}
 
 

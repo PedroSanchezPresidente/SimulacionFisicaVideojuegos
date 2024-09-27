@@ -7,7 +7,7 @@ using namespace physx;
 class Particle
 {
 public:
-	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acc) : acc(Acc), vel(Vel), pose(Pos) {
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acc, float Dumpling) : acc(Acc), vel(Vel), pose(Pos), dumpling(Dumpling) {
 		renderItem = new RenderItem;
 		PxSphereGeometry s;
 		s.radius = 1;
@@ -25,6 +25,7 @@ public:
 	}
 
 private:
+	float dumpling;
 	Vector3 vel;
 	Vector3 acc;
 	PxTransform pose;
