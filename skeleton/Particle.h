@@ -3,7 +3,7 @@
 #include "RenderUtils.hpp"
 
 using namespace physx;
-#define VERLET
+#define EULER
 
 class Particle
 {
