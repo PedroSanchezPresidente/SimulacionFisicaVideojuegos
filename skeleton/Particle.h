@@ -7,7 +7,7 @@ using namespace physx;
 class Particle
 {
 public:
-	Particle(Vector3 Pos, Vector3 Vel) : vel(Vel), pose(Pos) {
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acc) : acc(Acc), vel(Vel), pose(Pos) {
 		renderItem = new RenderItem;
 		PxSphereGeometry s;
 		s.radius = 1;
@@ -20,8 +20,13 @@ public:
 
 	void integrade(double t);
 
+	void setAcceleration(Vector3 Acc) {
+		acc = Acc;
+	}
+
 private:
 	Vector3 vel;
+	Vector3 acc;
 	PxTransform pose;
 	RenderItem* renderItem;
 };
