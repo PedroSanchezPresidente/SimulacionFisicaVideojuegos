@@ -19,13 +19,13 @@ public:
 	};
 	~Particle() { DeregisterRenderItem(renderItem); delete renderItem; };
 
-	void integrade(double t);
+	virtual void integrade(double t);
 
 	void setAcceleration(Vector3 Acc) {
 		acc = Acc;
 	}
 
-private:
+protected:
 	float dumpling;
 	Vector3 vel;
 	Vector3 acc;

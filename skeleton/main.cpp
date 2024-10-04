@@ -8,7 +8,7 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 #include "Vector3D.h"
-#include "Particle.h"
+#include "Proyectil.h"
 
 #include <iostream>
 
@@ -32,12 +32,11 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-RenderItem* esfera;
 RenderItem* esferaX;
 RenderItem* esferaY;
 RenderItem* esferaZ;
 
-Particle* particle;
+std::vector<Proyectil*> proyectiles;
 
 
 // Initialize physics engine
@@ -68,12 +67,6 @@ void initPhysics(bool interactive)
 	PxSphereGeometry s;
 	s.radius = 1;
 
-	//Generacion de las 4 esferas
-	/*esfera = new RenderItem;
-	esfera->transform = new PxTransform(PxVec3(0, 0, 0));
-	esfera->color = Vector4(1.0, 1.0, 1.0, 1.0);
-	esfera->shape = CreateShape(s);
-	RegisterRenderItem(esfera);*/
 
 	esferaX = new RenderItem;
 	Vector3D v1(10, 0, 0);
@@ -97,7 +90,7 @@ void initPhysics(bool interactive)
 	esferaZ->shape = CreateShape(s);
 	RegisterRenderItem(esferaZ);
 
-	particle = new Particle(Vector3(0, 0, 0), Vector3(0,1,0), Vector3(0,1,0));
+
 	}
 
 
@@ -111,7 +104,8 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	particle->integrade(t);
+	for(int i = 0; i < proyectiles.size(); i++)
+		proyectiles[i]->integrade(t);
 }
 
 // Function to clean data
@@ -131,12 +125,13 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	//DeregisterRenderItem(esfera);
 	DeregisterRenderItem(esferaX);
 	DeregisterRenderItem(esferaY);
 	DeregisterRenderItem(esferaZ);
 
-	delete particle;
+	for(int i = 0; i < proyectiles.size(); i ++)
+		delete proyectiles[i];
+	proyectiles.clear();
 	}
 
 // Function called when a key is pressed
@@ -150,6 +145,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
+		proyectiles.push_back(new Proyectil(camera.p, Vector3(0,0,0) - camera.p, Vector3(1, 0, 0)));
 		break;
 	}
 	default:
