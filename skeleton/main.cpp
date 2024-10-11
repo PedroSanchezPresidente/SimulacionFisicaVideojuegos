@@ -145,7 +145,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
-		proyectiles.push_back(new Proyectil(camera.p, Vector3(0,0,0) - camera.p, Vector3(1, 0, 0)));
+		proyectiles.push_back(new Proyectil(camera.p, GetCamera()->getDir() * 10, Vector3(0, 0, 0), Vector3(38,0,0)));
 		break;
 	}
 	default:
