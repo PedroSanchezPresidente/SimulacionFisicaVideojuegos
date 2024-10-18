@@ -13,5 +13,5 @@ void Particle::integrade(double t) {
 	vel += acc * t / 2;
 	pose.p += vel*t;
 #endif // !Euler
-	time -= t;
+	lifeTime -= t;
 }

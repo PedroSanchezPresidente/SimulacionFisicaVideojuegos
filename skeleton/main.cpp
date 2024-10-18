@@ -9,6 +9,7 @@
 #include "callbacks.hpp"
 #include "Vector3D.h"
 #include "Proyectil.h"
+#include "ParticleSystem.h"
 
 #include <iostream>
 
@@ -35,6 +36,8 @@ ContactReportCallback gContactReportCallback;
 RenderItem* esferaX;
 RenderItem* esferaY;
 RenderItem* esferaZ;
+
+ParticleSystem* particleSystem;
 
 std::vector<Proyectil*> proyectiles;
 
@@ -90,7 +93,8 @@ void initPhysics(bool interactive)
 	esferaZ->shape = CreateShape(s);
 	RegisterRenderItem(esferaZ);
 
-
+	particleSystem = new ParticleSystem();
+	particleSystem->addGenerator(Vector3(0,0,0), Vector3(0,10,0), 1, 1, 2, ParticleType::SPHERE);
 	}
 
 
@@ -106,6 +110,8 @@ void stepPhysics(bool interactive, double t)
 
 	for(int i = 0; i < proyectiles.size(); i++)
 		proyectiles[i]->integrade(t);
+
+	particleSystem->update(t);
 }
 
 // Function to clean data
@@ -132,7 +138,8 @@ void cleanupPhysics(bool interactive)
 	for(int i = 0; i < proyectiles.size(); i ++)
 		delete proyectiles[i];
 	proyectiles.clear();
-	}
+	delete particleSystem;
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)

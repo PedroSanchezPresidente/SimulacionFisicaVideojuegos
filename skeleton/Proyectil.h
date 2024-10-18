@@ -7,7 +7,7 @@ private:
 	Vector3 gS;
 	float masaS;
 public:
-	Proyectil(Vector3 Pos, Vector3 Vel, Vector3 Acc, Vector3 VelR = Vector3(330, 0, 0), float Masa = 0.00356, Vector3 Gravedad = Vector3(0.0, -9.8, 0.0), float Dumpling = 0.9) : Particle(Pos, Vel, Acc, Dumpling)
+	Proyectil(Vector3 Pos, Vector3 Vel, Vector3 Acc, Vector3 VelR = Vector3(330, 0, 0), float Masa = 0.00356, Vector3 Gravedad = Vector3(0.0, -9.8, 0.0), float Dumpling = 0.9) : Particle(Pos, Vel, Vector3(1,1,1), Vector3(0,0,0), 1, CreateShape(PxSphereGeometry()), 10, Acc, Dumpling)
 	{
 		masaS = Masa * VelR.magnitudeSquared() / vel.magnitudeSquared();
 		gS = Gravedad * vel.magnitudeSquared() / VelR.magnitudeSquared();
