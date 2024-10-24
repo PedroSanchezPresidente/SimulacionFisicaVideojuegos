@@ -45,6 +45,7 @@ std::vector<Proyectil*> proyectiles;
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
+	srand(time(NULL));
 	PX_UNUSED(interactive);
 
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gAllocator, gErrorCallback);
@@ -94,7 +95,7 @@ void initPhysics(bool interactive)
 	RegisterRenderItem(esferaZ);
 
 	particleSystem = new ParticleSystem();
-	particleSystem->addGenerator(Vector3(0,0,0), Vector3(0,10,0), 1, 1, 2, ParticleType::SPHERE);
+	particleSystem->addGenerator(Vector3(0,0,0), Vector3(0,5,0), 40, 10, 20, ParticleType::SPHERE, Vector3(5, 10, 5));
 	}
 
 

@@ -3,7 +3,7 @@
 void ParticleSystem::update(double t) {
 
 	for (ParticleGenerator* g : generators) {
-		g->generarParticulas(particles, t);
+		g->generarParticulasGauss(particles, t);
 
 		int cont = g->getNumeroParticula();
 
@@ -14,17 +14,19 @@ void ParticleSystem::update(double t) {
 				auto aux = it;
 				++aux;
 				particles.erase(it);
+				g->decreaseNumeroParticula();
 				it = aux;
 			}
-			else
+			else {
 				(*it)->integrade(t);
-			++it;
+				++it;
+			}
 			cont--;
 		}
 	}
 
 }
 
-void ParticleSystem::addGenerator(Vector3 pos, Vector3 dir, float radio, float lifeTime, float ratio,ParticleType type) {
-	generators.push_back(new ParticleGenerator(pos, dir, radio,lifeTime, ratio, type));
+void ParticleSystem::addGenerator(Vector3 pos, Vector3 minDir, float radio, float lifeTime, float ratio,ParticleType type, Vector3 maxDir) {
+	generators.push_back(new ParticleGenerator(pos, minDir, radio,lifeTime, ratio, type, maxDir));
 }
