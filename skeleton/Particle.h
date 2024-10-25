@@ -12,13 +12,16 @@ public:
 	Particle(Vector3 Pos, Vector3 Vel, Vector3 Scale, Vector3 Color, float Transparencia, PxShape* Shape, float LifeTime, float Radio, Vector3 Acc = Vector3(0, 0, 0), float Dumpling = 0.9) : 
 		acc(Acc), vel(Vel), pose(Pos), posIni(Pos), dumpling(Dumpling), lifeTime(LifeTime), radio(Radio*Radio)
 	{
-		renderItem = new RenderItem;
+		/*renderItem = new RenderItem;
 		renderItem->shape = Shape;
 		renderItem->color = Vector4(Color, Transparencia);
-		renderItem->transform = &pose;
+		renderItem->transform = &pose;*/
+
+		renderItem = new RenderItem(Shape, &pose, Vector4(Color, Transparencia));
+
 		RegisterRenderItem(renderItem);
 	};
-	~Particle() { DeregisterRenderItem(renderItem); delete renderItem; };
+	~Particle() { DeregisterRenderItem(renderItem); };
 
 	virtual void integrade(double t);
 
