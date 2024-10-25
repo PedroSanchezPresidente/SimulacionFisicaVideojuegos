@@ -9,8 +9,8 @@ class Particle
 {
 public:
 
-	Particle(Vector3 Pos, Vector3 Vel, Vector3 Scale, Vector3 Color, float Transparencia, PxShape* Shape, float LifeTime, Vector3 Acc = Vector3(0, 0, 0), float Dumpling = 0.9) : 
-		acc(Acc), vel(Vel), pose(Pos), dumpling(Dumpling), lifeTime(LifeTime)
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 Scale, Vector3 Color, float Transparencia, PxShape* Shape, float LifeTime, float Radio, Vector3 Acc = Vector3(0, 0, 0), float Dumpling = 0.9) : 
+		acc(Acc), vel(Vel), pose(Pos), posIni(Pos), dumpling(Dumpling), lifeTime(LifeTime), radio(Radio*Radio)
 	{
 		renderItem = new RenderItem;
 		renderItem->shape = Shape;
@@ -26,7 +26,12 @@ public:
 		acc = Acc;
 	}
 
-	float getLifeTime() { return lifeTime; };
+	bool isAlive() { 
+		if (lifeTime < 0 || (pose.p - posIni).magnitudeSquared() > radio)
+			return false;
+		else
+			return true;
+	};
 
 	Vector3 getPos() { return pose.p; };
 
@@ -35,7 +40,9 @@ protected:
 	Vector3 vel;
 	Vector3 acc;
 	PxTransform pose;
+	Vector3 posIni;
 	float lifeTime;
+	float radio;
 	RenderItem* renderItem;
 };
 

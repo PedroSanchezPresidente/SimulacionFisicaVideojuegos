@@ -24,6 +24,8 @@ public:
 
 	void update(double t);
 
-	void addGenerator(Vector3 pos, Vector3 minDir, float radio, float lifeTime, float ratio, ParticleType type, Vector3 dirMax = Vector3(0,0,0));
+	void addGenerator(Vector3 pos, Vector3 minDir, Vector3 maxDir, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale);
+
+	void addGenerator(Vector3 pos, float mean, Vector3 dev, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale);
 };
 

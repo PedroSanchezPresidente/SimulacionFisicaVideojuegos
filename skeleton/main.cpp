@@ -95,7 +95,12 @@ void initPhysics(bool interactive)
 	RegisterRenderItem(esferaZ);
 
 	particleSystem = new ParticleSystem();
-	particleSystem->addGenerator(Vector3(0,0,0), Vector3(0,5,0), 40, 10, 20, ParticleType::SPHERE, Vector3(5, 10, 5));
+
+	particleSystem->addGenerator(Vector3(-20,0,20), Vector3(-3,10,-3), Vector3(3, 20, 3), 20, 4, 100, Vector3(0,0,1), 1, Vector3(1,1,1));
+
+	particleSystem->addGenerator(Vector3(0, 0, 0), 0, Vector3(20, 1, 20), 10, 4, 100, Vector3(1, 1, 0), 1, Vector3(1, 1, 1));
+
+	particleSystem->addGenerator(Vector3(20, 0, -20), Vector3(-10,-10,-10), Vector3(10, 10, 10), 10, 4, 500, Vector3(0.6, 0.6, 0.6), 1, Vector3(1, 1, 1));
 	}
 
 
@@ -153,7 +158,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
-		proyectiles.push_back(new Proyectil(camera.p, GetCamera()->getDir() * 10, Vector3(0, 0, 0), Vector3(38,0,0)));
+		PxSphereGeometry s;
+		s.radius = 1;
+		PxShape* shape = CreateShape(s);
+		proyectiles.push_back(new Proyectil(camera.p, GetCamera()->getDir() * 10, Vector3(0, 0, 0), shape, Vector3(38,0,0)));
 		break;
 	}
 	default:

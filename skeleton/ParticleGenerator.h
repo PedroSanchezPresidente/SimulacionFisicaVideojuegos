@@ -2,43 +2,62 @@
 #include <list>
 #include "Particle.h"
 
-enum ParticleType {SPHERE, BOX};
+enum ParticleType {LINEAL, NORMAL_2D, NORMAL_MULTI};
 
 class ParticleGenerator
 {
 private:
 	ParticleType type;
 	Vector3 pos;
-	Vector3 minDir;
 	int radio;
 	int lifeTime;
 	float timer;
 	float rate;			//particulas por segundo
 	PxShape* shape;
 	int numPar;
-	Vector3 maxDir;
+	Vector3 color;
+	float transparencia;
+	Vector3 scale;
 
-public:
-	ParticleGenerator(Vector3 Pos, Vector3 MinDir, int Radio, float LifeTime, float Rate, ParticleType Type, Vector3 DirMax = Vector3(0,0,0)) : pos(Pos), minDir(MinDir), radio(Radio* Radio), lifeTime(LifeTime), type(Type), numPar(0), maxDir(DirMax) {
-		rate = 1 / Rate;
-		if (type == SPHERE){
-			PxSphereGeometry s;
-			s.radius = 1;
-			shape = CreateShape(s);
-		}
-		else if(type == BOX){
-			PxBoxGeometry b;
-			shape = CreateShape(b);
-		}
+	struct DistributionData {
+		struct {
+			Vector3 minDir;
+			Vector3 maxDir;
+		} uniform_data;
+		struct {
+			float mean;
+			Vector3 dev;
+		} normal_data;
 	};
+
+	DistributionData data;
+
+	float generateGauss(float mean, float dev);
+
+	float generateUni(float min, float max);
 
 	void generarParticulasDU(std::list<Particle*> &particulas, double t);
 
 	void generarParticulasGauss(std::list<Particle*>& particulas, double t);
 
-	int getNumeroParticula() { return numPar; };
+public:
+	ParticleGenerator(Vector3 Pos, Vector3 MinDir, Vector3 MaxDir,int Radio, float LifeTime, float Rate, Vector3 Color, float Transparencia, Vector3 Scale) : pos(Pos), radio(Radio), lifeTime(LifeTime), type(LINEAL), numPar(0), color(Color), transparencia(Transparencia), scale(Scale) {
+		data.uniform_data = { MinDir, MaxDir };
+		rate = 1 / Rate;
+		PxSphereGeometry s;
+		s.radius = 1;
+		shape = CreateShape(s);
+	};
 
-	void decreaseNumeroParticula() { numPar--; };
+	ParticleGenerator(Vector3 Pos, float Mean, Vector3 Dev, int Radio, float LifeTime, float Rate, Vector3 Color, float Transparencia, Vector3 Scale) : pos(Pos), radio(Radio), lifeTime(LifeTime), type(NORMAL_2D), numPar(0), color(Color), transparencia(Transparencia), scale(Scale) {
+		data.normal_data = {Mean, Dev};
+		rate = 1 / Rate;
+		PxSphereGeometry s;
+		s.radius = 1;
+		shape = CreateShape(s);
+	};
+
+	void generarParticulas(std::list<Particle*>& particulas, double t);
 
 	Vector3 getPos() { return pos; };
 
