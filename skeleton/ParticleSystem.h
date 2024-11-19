@@ -2,6 +2,7 @@
 #include <list>
 #include "Particle.h"
 #include "ParticleGenerator.h"
+#include "ForceGenerator.h"
 
 using namespace std;
 
@@ -9,7 +10,8 @@ class ParticleSystem
 {
 private:
 	list<Particle*> particles;
-	list<ParticleGenerator*> generators;
+	list<ParticleGenerator*> particleGens;
+	list<ForceGenerator*> forceGens;
 
 public:
 	~ParticleSystem() {
@@ -17,9 +19,9 @@ public:
 			delete p;
 		particles.clear();
 
-		for (ParticleGenerator* g : generators)
+		for (ParticleGenerator* g : particleGens)
 			delete g;
-		generators.clear();
+		particleGens.clear();
 	}
 
 	void update(double t);
