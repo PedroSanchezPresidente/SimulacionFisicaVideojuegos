@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <vector>
 #include "Particle.h"
 
 enum ParticleType {LINEAL, NORMAL_2D, NORMAL_MULTI};
@@ -18,6 +19,8 @@ private:
 	Vector3 color;
 	float transparencia;
 	Vector3 scale;
+	float masa;
+	std::vector<int>* ForceGeneratorsIndex;
 
 	struct DistributionData {
 		struct {
@@ -41,7 +44,7 @@ private:
 	void generarParticulasGauss(std::list<Particle*>& particulas, double t);
 
 public:
-	ParticleGenerator(Vector3 Pos, Vector3 MinDir, Vector3 MaxDir,int Radio, float LifeTime, float Rate, Vector3 Color, float Transparencia, Vector3 Scale) : pos(Pos), radio(Radio), lifeTime(LifeTime), type(LINEAL), numPar(0), color(Color), transparencia(Transparencia), scale(Scale) {
+	ParticleGenerator(Vector3 Pos, Vector3 MinDir, Vector3 MaxDir,int Radio, float LifeTime, float Rate, Vector3 Color, float Transparencia, Vector3 Scale, float Masa = 1, std::vector<int>* FGIndex = new std::vector<int>) : pos(Pos), radio(Radio), lifeTime(LifeTime), type(LINEAL), numPar(0), color(Color), transparencia(Transparencia), scale(Scale), masa(Masa), ForceGeneratorsIndex(FGIndex) {
 		data.uniform_data = { MinDir, MaxDir };
 		rate = 1 / Rate;
 		PxSphereGeometry s;
@@ -49,7 +52,7 @@ public:
 		shape = CreateShape(s);
 	};
 
-	ParticleGenerator(Vector3 Pos, float Mean, Vector3 Dev, int Radio, float LifeTime, float Rate, Vector3 Color, float Transparencia, Vector3 Scale) : pos(Pos), radio(Radio), lifeTime(LifeTime), type(NORMAL_2D), numPar(0), color(Color), transparencia(Transparencia), scale(Scale) {
+	ParticleGenerator(Vector3 Pos, float Mean, Vector3 Dev, int Radio, float LifeTime, float Rate, Vector3 Color, float Transparencia, Vector3 Scale, float Masa = 1, std::vector<int>* FGIndex = new std::vector<int>) : pos(Pos), radio(Radio), lifeTime(LifeTime), type(NORMAL_2D), numPar(0), color(Color), transparencia(Transparencia), scale(Scale), masa(Masa), ForceGeneratorsIndex(FGIndex) {
 		data.normal_data = {Mean, Dev};
 		rate = 1 / Rate;
 		PxSphereGeometry s;
@@ -62,5 +65,9 @@ public:
 	Vector3 getPos() { return pos; };
 
 	float getRadio() { return radio; };
+
+	void addForceGenerator(int i) { return ForceGeneratorsIndex->push_back(i); };
+
+	std::vector<int>* getForceGenerators() const {return ForceGeneratorsIndex; };
 };
 

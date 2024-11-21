@@ -33,6 +33,7 @@
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GravityGenerator.h" />
+    <ClInclude Include="WindGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

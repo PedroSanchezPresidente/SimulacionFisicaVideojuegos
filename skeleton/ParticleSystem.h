@@ -2,7 +2,8 @@
 #include <list>
 #include "Particle.h"
 #include "ParticleGenerator.h"
-#include "ForceGenerator.h"
+#include "GravityGenerator.h"
+#include "WindGenerator.h"
 
 using namespace std;
 
@@ -10,8 +11,8 @@ class ParticleSystem
 {
 private:
 	list<Particle*> particles;
-	list<ParticleGenerator*> particleGens;
-	list<ForceGenerator*> forceGens;
+	vector<ParticleGenerator*> particleGens;
+	vector<ForceGenerator*> forceGens;
 
 public:
 	~ParticleSystem() {
@@ -26,8 +27,14 @@ public:
 
 	void update(double t);
 
-	void addGenerator(Vector3 pos, Vector3 minDir, Vector3 maxDir, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale);
+	int addParticleGenerator(Vector3 pos, Vector3 minDir, Vector3 maxDir, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale, float Masa = 1, vector<int>* FGIndex = new vector<int>);
 
-	void addGenerator(Vector3 pos, float mean, Vector3 dev, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale);
+	int addParticleGenerator(Vector3 pos, float mean, Vector3 dev, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale, float Masa = 1, vector<int>* FGIndex = new vector<int>);
+
+	void asociateForceGenerator(int ParticleGeneratorIndex, int ForceGeneratorIndex);
+
+	void asociateForceGeneratorToAll(int ForceGeneratorIndex);
+
+	int addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k = 1);
 };
 
