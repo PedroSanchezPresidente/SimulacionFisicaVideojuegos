@@ -3,7 +3,7 @@
 #include "Particle.h"
 #include "ParticleGenerator.h"
 #include "GravityGenerator.h"
-#include "WindGenerator.h"
+#include "WhirlWindGenerator.h"
 
 using namespace std;
 
@@ -35,6 +35,6 @@ public:
 
 	void asociateForceGeneratorToAll(int ForceGeneratorIndex);
 
-	int addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k = 1);
+	int addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k = 1, float Radius = 0);
 };
 

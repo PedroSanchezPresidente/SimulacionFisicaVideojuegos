@@ -45,7 +45,7 @@ void ParticleSystem::asociateForceGeneratorToAll(int ForceGeneratorIndex) {
 		g->addForceGenerator(ForceGeneratorIndex);
 }
 
-int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k) {
+int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k, float Radius) {
 	switch (tipe)
 	{
 	case GRAVITY:
@@ -55,6 +55,7 @@ int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, fl
 		forceGens.push_back(new WindGenerator(force, k));
 		break;
 	case WHIRLWIND:
+		forceGens.push_back(new WhirlWindGenerator(force, Radius, k));
 		break;
 	case EXPLOSION:
 		break;

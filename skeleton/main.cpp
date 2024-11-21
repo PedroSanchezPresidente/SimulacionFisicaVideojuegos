@@ -96,19 +96,23 @@ void initPhysics(bool interactive)
 
 	particleSystem = new ParticleSystem();
 
-	int gInd = particleSystem->addParticleGenerator(Vector3(-20,0,20), Vector3(-3,10,-3), Vector3(3, 20, 3), 20, 4, 100, Vector3(0,0,1), 1, Vector3(1,1,1));
+	particleSystem->addParticleGenerator(Vector3(-20,0,20), Vector3(-3,10,-3), Vector3(3, 20, 3), 20, 4, 100, Vector3(0,0,1), 1, Vector3(1,1,1));
 
-	particleSystem->addParticleGenerator(Vector3(0, 0, 0), 0, Vector3(20, 1, 20), 10, 4, 100, Vector3(1, 1, 0), 1, Vector3(1, 1, 1));
+	particleSystem->addParticleGenerator(Vector3(0, 0, 0), 0, Vector3(20, 1, 20), 100, 4, 100, Vector3(1, 1, 0), 1, Vector3(1, 1, 1));
 
 	particleSystem->addParticleGenerator(Vector3(20, 0, -20), Vector3(-10,-10,-10), Vector3(10, 10, 10), 10, 4, 500, Vector3(0.6, 0.6, 0.6), 1, Vector3(1, 1, 1));
 
 	int index = particleSystem->addForceGenerator(GRAVITY, Vector3(0,-9.8,0));
 
-	particleSystem->asociateForceGeneratorToAll(index);
+	//particleSystem->asociateForceGeneratorToAll(index);
 
 	index = particleSystem->addForceGenerator(WIND, Vector3(0,0,-10), 0.3);
 
-	particleSystem->asociateForceGenerator(gInd, index);
+	particleSystem->asociateForceGenerator(0, index);
+
+	index = particleSystem->addForceGenerator(WHIRLWIND, Vector3(0, 0, 0), 3, 100);
+
+	particleSystem->asociateForceGenerator(1, index);
 	}
 
 
