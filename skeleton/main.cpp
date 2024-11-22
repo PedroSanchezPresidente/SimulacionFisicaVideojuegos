@@ -103,8 +103,6 @@ void initPhysics(bool interactive)
 	int index = particleSystem->addAnchorGenerator({0,0,15}, 1, 10);
 	v->push_back(index);
 
-	particleSystem->generateParticle(Vector3(0, -20, 15), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
-
 	std::vector<int>* aux = new std::vector<int>;
 
 	Particle* p1 = particleSystem->generateParticle(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0), 100.f, 1000.f, 1.f, aux);
