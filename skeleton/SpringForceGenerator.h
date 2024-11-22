@@ -4,7 +4,7 @@
 
 class SpringForceGenerator : public ForceGenerator {
 public:
-	SpringForceGenerator(double k, double resting_leng, Particle* other) : _k(k), _resting_length(resting_leng), _other(other) {};
+	SpringForceGenerator(double k, double resting_leng, Particle* other) : _k(k), _resting_length(resting_leng), _other(other), ForceGenerator(Vector3(0, 0, 0)) {};
 
 	virtual Vector3 getForce(Particle* particle) {
 		Vector3 relative_pos_vector = _other->getPos() - particle->getPos();
@@ -25,5 +25,5 @@ public:
 protected:
 	double _k;
 	double _resting_length;
-	Particle* _other
+	Particle* _other;
 };

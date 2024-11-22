@@ -72,3 +72,8 @@ int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, fl
 
 	return forceGens.size() - 1;
 }
+
+int ParticleSystem::addSpringGenerator(Particle* p1, double k, double res) {
+	forceGens.push_back(new SpringForceGenerator(k, res, p1));
+	return forceGens.size() - 1;
+}
