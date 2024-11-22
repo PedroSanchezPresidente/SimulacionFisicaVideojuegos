@@ -97,18 +97,23 @@ void initPhysics(bool interactive)
 
 	particleSystem = new ParticleSystem();
 
-	particleSystem->generateParticle(Vector3(0, -20, 15), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
+	//particleSystem->generateParticle(Vector3(0, -20, 15), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
 
 
-	int index = particleSystem->addAnchorGenerator({0,0,15}, 1, 10);
-	v->push_back(index);
+	//int index = particleSystem->addAnchorGenerator({0,0,15}, 1, 10);
+	//v->push_back(index);
 
-	std::vector<int>* aux = new std::vector<int>;
+	//std::vector<int>* aux = new std::vector<int>;
 
-	Particle* p1 = particleSystem->generateParticle(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0), 100.f, 1000.f, 1.f, aux);
-	Particle* p2 = particleSystem->generateParticle(Vector3(5, 0, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 1.f, aux);
+	//Particle* p1 = particleSystem->generateParticle(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0), 100.f, 1000.f, 1.f, aux);
+	//Particle* p2 = particleSystem->generateParticle(Vector3(5, 0, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 1.f, aux);
 
-	aux->push_back(particleSystem->addElasticGenerator(p1, 1, 2, p2));
+	//aux->push_back(particleSystem->addElasticGenerator(p1, 1, 2, p2));
+
+
+	particleSystem->generateParticle(Vector3(0, 5, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 2.5, v);
+	v->push_back(particleSystem->addBouyancyGenerator(0.5, 4.19, 1));
+	v->push_back(particleSystem->addForceGenerator(GRAVITY, {0,-9.8,0}));
 	}
 
 

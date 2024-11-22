@@ -84,3 +84,8 @@ int ParticleSystem::addAnchorGenerator(Vector3 pos, double k, double res) {
 	forceGens.push_back(new AnchoredSpringFG(k, res, pos));
 	return forceGens.size() - 1;
 }
+
+int ParticleSystem::addBouyancyGenerator(float h, float v ,float d) {
+	forceGens.push_back(new BouyancyForceGenerator(h, v, d));
+	return forceGens.size() - 1;
+}

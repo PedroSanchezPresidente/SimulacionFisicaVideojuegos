@@ -7,6 +7,7 @@
 #include "ExplosionGenerator.h"
 #include "AnchoredSpringFG.h"
 #include "ElasticForceGenerator.h"
+#include "BouyancyForceGenerator.h"
 
 using namespace std;
 
@@ -43,6 +44,8 @@ public:
 	int addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k = 1, float Radius = 0);
 
 	int addElasticGenerator(Particle* p1, double k, double res, Particle* p2);
+
+	int addBouyancyGenerator(float h, float v, float d);
 
 	int addAnchorGenerator(Vector3 pos, double k, double res);
 };
