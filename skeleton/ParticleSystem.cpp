@@ -45,6 +45,12 @@ void ParticleSystem::asociateForceGeneratorToAll(int ForceGeneratorIndex) {
 		g->addForceGenerator(ForceGeneratorIndex);
 }
 
+void ParticleSystem::generateParticle(Vector3 pos, Vector3 vel, Vector3 color, float lifeTime, float radius, float masa, std::vector<int>* index) {
+	PxSphereGeometry s;
+	s.radius = 1;
+	particles.push_back(new Particle(pos, vel, Vector3(1,1,1), color, 1, CreateShape(s), lifeTime, radius, masa, index));
+}
+
 int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k, float Radius) {
 	switch (tipe)
 	{
@@ -58,6 +64,7 @@ int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, fl
 		forceGens.push_back(new WhirlWindGenerator(force, Radius, k));
 		break;
 	case EXPLOSION:
+		forceGens.push_back(new ExplosionGenerator(force, k, Radius));
 		break;
 	default:
 		break;

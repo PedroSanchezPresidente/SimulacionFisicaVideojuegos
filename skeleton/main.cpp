@@ -40,6 +40,10 @@ RenderItem* esferaZ;
 ParticleSystem* particleSystem;
 
 std::vector<Proyectil*> proyectiles;
+std::vector<Particle*> particles;
+std::vector<int>* v = new vector<int>;
+
+//Particle* staticCube;
 
 
 // Initialize physics engine
@@ -96,11 +100,19 @@ void initPhysics(bool interactive)
 
 	particleSystem = new ParticleSystem();
 
-	particleSystem->addParticleGenerator(Vector3(-20,0,20), Vector3(-3,10,-3), Vector3(3, 20, 3), 20, 4, 100, Vector3(0,0,1), 1, Vector3(1,1,1));
+	//particleSystem->addParticleGenerator(Vector3(-20,0,20), Vector3(-3,10,-3), Vector3(3, 20, 3), 20, 4, 100, Vector3(0,0,1), 1, Vector3(1,1,1));
 
-	particleSystem->addParticleGenerator(Vector3(0, 0, 0), 0, Vector3(20, 1, 20), 100, 4, 100, Vector3(1, 1, 0), 1, Vector3(1, 1, 1));
+	//particleSystem->addParticleGenerator(Vector3(0, 0, 0), 0, Vector3(20, 1, 20), 100, 4, 100, Vector3(1, 1, 0), 1, Vector3(1, 1, 1));
 
-	particleSystem->addParticleGenerator(Vector3(20, 0, -20), Vector3(-10,-10,-10), Vector3(10, 10, 10), 10, 4, 500, Vector3(0.6, 0.6, 0.6), 1, Vector3(1, 1, 1));
+	//particleSystem->addParticleGenerator(Vector3(20, 0, -20), Vector3(-10,-10,-10), Vector3(10, 10, 10), 10, 4, 500, Vector3(0.6, 0.6, 0.6), 1, Vector3(1, 1, 1));
+
+	//particles.push_back(new Particle(Vector3(0,0,0), Vector3(0,0,0), Vector3(1,1,1), Vector3(0,0,1), 1.f, CreateShape(s), 100.f, 1000.f, 1.f));
+
+	particleSystem->generateParticle(Vector3(1, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 1),  100.f, 1000.f, 1.f, v);
+	particleSystem->generateParticle(Vector3(20, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 1), 100.f, 1000.f, 5.f, v);
+	particleSystem->generateParticle(Vector3(10, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0), 100.f, 1000.f, 2.f, v);
+	particleSystem->generateParticle(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(1, 0, 1), 100.f, 1000.f, 7.f, v);
+	particleSystem->generateParticle(Vector3(0, 0, 30), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 40.f, v);
 
 	int index = particleSystem->addForceGenerator(GRAVITY, Vector3(0,-9.8,0));
 
@@ -108,11 +120,13 @@ void initPhysics(bool interactive)
 
 	index = particleSystem->addForceGenerator(WIND, Vector3(0,0,-10), 0.3);
 
-	particleSystem->asociateForceGenerator(0, index);
+	//particleSystem->asociateForceGenerator(0, index);
+
+	index = particleSystem->addForceGenerator(WIND, Vector3(0, 0, -10), 0.3);
+
+	//particleSystem->asociateForceGenerator(1, index);
 
 	index = particleSystem->addForceGenerator(WHIRLWIND, Vector3(0, 0, 0), 3, 100);
-
-	particleSystem->asociateForceGenerator(1, index);
 	}
 
 
@@ -163,7 +177,7 @@ void cleanupPhysics(bool interactive)
 void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
-
+	int index;
 	switch(toupper(key))
 	{
 	//case 'B': break;
@@ -176,6 +190,18 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		proyectiles.push_back(new Proyectil(camera.p, GetCamera()->getDir() * 10, Vector3(0, 0, 0), shape, Vector3(38,0,0)));
 		break;
 	}
+	case 'V':
+		index = particleSystem->addForceGenerator(WIND, Vector3(0, 0, -10), 0.3);
+		v->push_back(index);
+		break;
+	case 'B':
+		index = particleSystem->addForceGenerator(WHIRLWIND, Vector3(0, 0, 0), 3, 100);
+		v->push_back(index);
+		break;
+	case 'E':
+		index = particleSystem->addForceGenerator(EXPLOSION, Vector3(0, 0, 0), 5000000, 1000);
+		v->push_back(index);
+		break;
 	default:
 		break;
 	}

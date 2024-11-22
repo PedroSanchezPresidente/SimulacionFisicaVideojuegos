@@ -2,11 +2,11 @@
 #include "ForceGenerator.h"
 #include <cmath>
 
-const float T;
+const float T = 1;
 
 class ExplosionGenerator : public ForceGenerator {
 private:
-	float k, radius, time = 0;
+	float k, radius, time = 4;
 
 public:
 	ExplosionGenerator(Vector3 Pos, float K, float Radius) : ForceGenerator(Pos), k(K), radius(Radius*Radius) {};
