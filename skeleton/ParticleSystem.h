@@ -5,7 +5,8 @@
 #include "GravityGenerator.h"
 #include "WhirlWindGenerator.h"
 #include "ExplosionGenerator.h"
-#include "SpringForceGenerator.h"
+#include "AnchoredSpringFG.h"
+#include "ElasticForceGenerator.h"
 
 using namespace std;
 
@@ -35,12 +36,14 @@ public:
 
 	void asociateForceGenerator(int ParticleGeneratorIndex, int ForceGeneratorIndex);
 
-	void generateParticle(Vector3 pos, Vector3 vel, Vector3 color, float lifeTime, float radius, float masa, std::vector<int>* index);
+	Particle* generateParticle(Vector3 pos, Vector3 vel, Vector3 color, float lifeTime, float radius, float masa, std::vector<int>* index);
 
 	void asociateForceGeneratorToAll(int ForceGeneratorIndex);
 
 	int addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k = 1, float Radius = 0);
 
-	int addSpringGenerator(Particle* p, double k, double res);
+	int addElasticGenerator(Particle* p1, double k, double res, Particle* p2);
+
+	int addAnchorGenerator(Vector3 pos, double k, double res);
 };
 

@@ -45,10 +45,12 @@ void ParticleSystem::asociateForceGeneratorToAll(int ForceGeneratorIndex) {
 		g->addForceGenerator(ForceGeneratorIndex);
 }
 
-void ParticleSystem::generateParticle(Vector3 pos, Vector3 vel, Vector3 color, float lifeTime, float radius, float masa, std::vector<int>* index) {
+Particle* ParticleSystem::generateParticle(Vector3 pos, Vector3 vel, Vector3 color, float lifeTime, float radius, float masa, std::vector<int>* index) {
 	PxSphereGeometry s;
 	s.radius = 1;
-	particles.push_back(new Particle(pos, vel, Vector3(1,1,1), color, 1, CreateShape(s), lifeTime, radius, masa, index));
+	Particle* p = new Particle(pos, vel, Vector3(1, 1, 1), color, 1, CreateShape(s), lifeTime, radius, masa, index);
+	particles.push_back(p);
+	return p;
 }
 
 int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k, float Radius) {
@@ -73,7 +75,12 @@ int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, fl
 	return forceGens.size() - 1;
 }
 
-int ParticleSystem::addSpringGenerator(Particle* p1, double k, double res) {
-	forceGens.push_back(new SpringForceGenerator(k, res, p1));
+int ParticleSystem::addElasticGenerator(Particle* p1, double k, double res, Particle* p2) {
+	forceGens.push_back(new ElasticForceGenerator(k, res, p1, p2));
+	return forceGens.size() - 1;
+}
+
+int ParticleSystem::addAnchorGenerator(Vector3 pos, double k, double res) {
+	forceGens.push_back(new AnchoredSpringFG(k, res, pos));
 	return forceGens.size() - 1;
 }

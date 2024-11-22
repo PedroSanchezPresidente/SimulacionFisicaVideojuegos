@@ -43,8 +43,6 @@ std::vector<Proyectil*> proyectiles;
 std::vector<Particle*> particles;
 std::vector<int>* v = new vector<int>;
 
-Particle* staticCube;
-
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -75,11 +73,6 @@ void initPhysics(bool interactive)
 	PxSphereGeometry s;
 	s.radius = 1;
 
-	PxBoxGeometry b;
-	b.halfExtents = Vector3(1,1,1);
-	physx::PxShape* sape = CreateShape(b);
-	staticCube = new Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(1,1,1), Vector3(0, 0, 0), 1, sape, 100.f, 1000.f, 1.f, v);
-
 	esferaX = new RenderItem;
 	Vector3D v1(10, 0, 0);
 	esferaX->transform = new PxTransform(PxVec3(v1.x, v1.y, v1.z));
@@ -104,10 +97,20 @@ void initPhysics(bool interactive)
 
 	particleSystem = new ParticleSystem();
 
-	particleSystem->generateParticle(Vector3(0, 0, 20), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
+	particleSystem->generateParticle(Vector3(0, -20, 15), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
 
-	int index = particleSystem->addSpringGenerator(staticCube, 1, 10);
+
+	int index = particleSystem->addAnchorGenerator({0,0,15}, 1, 10);
 	v->push_back(index);
+
+	particleSystem->generateParticle(Vector3(0, -20, 15), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
+
+	std::vector<int>* aux = new std::vector<int>;
+
+	Particle* p1 = particleSystem->generateParticle(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0), 100.f, 1000.f, 1.f, aux);
+	Particle* p2 = particleSystem->generateParticle(Vector3(5, 0, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 1.f, aux);
+
+	aux->push_back(particleSystem->addElasticGenerator(p1, 1, 2, p2));
 	}
 
 

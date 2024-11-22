@@ -36,6 +36,9 @@
     <ClInclude Include="WindGenerator.h" />
     <ClInclude Include="WhirlWindGenerator.h" />
     <ClInclude Include="ExplosionGenerator.h" />
+    <ClInclude Include="SpringForceGenerator.h" />
+    <ClInclude Include="AnchoredSpringFG.h" />
+    <ClInclude Include="ElasticForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
