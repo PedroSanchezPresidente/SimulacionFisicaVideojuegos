@@ -40,6 +40,7 @@
     <ClInclude Include="AnchoredSpringFG.h" />
     <ClInclude Include="ElasticForceGenerator.h" />
     <ClInclude Include="BouyancyForceGenerator.h" />
+    <ClInclude Include="RigidSolid.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -10,6 +10,7 @@
 #include "Vector3D.h"
 #include "Proyectil.h"
 #include "ParticleSystem.h"
+#include "RigidSolid.h"
 
 #include <iostream>
 
@@ -43,6 +44,9 @@ std::vector<Proyectil*> proyectiles;
 std::vector<Particle*> particles;
 std::vector<int>* v = new vector<int>;
 
+PxRigidStatic* Suelo;
+RenderItem* floor_i;
+std::vector<RigidSolid*> rigidSolids;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -111,9 +115,17 @@ void initPhysics(bool interactive)
 	//aux->push_back(particleSystem->addElasticGenerator(p1, 1, 2, p2));
 
 
-	particleSystem->generateParticle(Vector3(0, 5, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 2.5, v);
-	v->push_back(particleSystem->addBouyancyGenerator(0.5, 4.19, 1));
-	v->push_back(particleSystem->addForceGenerator(GRAVITY, {0,-9.8,0}));
+	//particleSystem->generateParticle(Vector3(0, 5, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 2.5, v);
+	//v->push_back(particleSystem->addBouyancyGenerator(0.5, 4.19, 1));
+	//v->push_back(particleSystem->addForceGenerator(GRAVITY, {0,-9.8,0}));
+
+	Suelo = gPhysics->createRigidStatic({0,0,0});
+	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	floor_i = new RenderItem(shape, Suelo, {0.8,0.8,0.8,1});
+
+	rigidSolids.push_back(new RigidSolid({ 0,0,0 }, {1,0,0}, 1, 100, gScene, gPhysics));
 	}
 
 
@@ -157,7 +169,14 @@ void cleanupPhysics(bool interactive)
 	for(int i = 0; i < proyectiles.size(); i ++)
 		delete proyectiles[i];
 	proyectiles.clear();
+
 	delete particleSystem;
+
+	for (RigidSolid* s : rigidSolids)
+		delete s;
+	rigidSolids.clear();
+
+	DeregisterRenderItem(floor_i);
 }
 
 // Function called when a key is pressed

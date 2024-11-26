@@ -27,6 +27,10 @@ public:
 		for (ParticleGenerator* g : particleGens)
 			delete g;
 		particleGens.clear();
+
+		for (ForceGenerator* g : forceGens)
+			delete g;
+		forceGens.clear();
 	}
 
 	void update(double t);
