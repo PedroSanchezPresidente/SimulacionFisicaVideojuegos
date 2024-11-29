@@ -15,6 +15,7 @@
     <ClCompile Include="Proyectil.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="RigidSolidGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="ElasticForceGenerator.h" />
     <ClInclude Include="BouyancyForceGenerator.h" />
     <ClInclude Include="RigidSolid.h" />
+    <ClInclude Include="RigidSolidGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

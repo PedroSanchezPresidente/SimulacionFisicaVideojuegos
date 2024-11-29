@@ -125,7 +125,11 @@ void initPhysics(bool interactive)
 	gScene->addActor(*Suelo);
 	floor_i = new RenderItem(shape, Suelo, {0.8,0.8,0.8,1});
 
-	rigidSolids.push_back(new RigidSolid({ 0,0,0 }, {1,0,0}, 1, 100, gScene, gPhysics));
+	PxSphereGeometry sphere;
+	sphere.radius = 2;
+	shape = CreateShape(sphere);
+	float densidad = 2.f / 3.f * 2.f * 2.f * 2.f * 2.f;
+	rigidSolids.push_back(new RigidSolid({ 0,1,0 }, {1,0,0}, shape, densidad , 100, gScene, gPhysics));
 	}
 
 
