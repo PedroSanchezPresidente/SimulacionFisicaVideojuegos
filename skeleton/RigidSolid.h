@@ -24,7 +24,12 @@ public:
 	void setMass(float m) { masa = m; }
 	void integrade(double t) { lifeTime -= t; };
 
-	bool isAlive() { return (pose.p - iniPos).magnitudeSquared() >= maxDist || lifeTime < 0; };
+	bool isAlive() { 
+		if ((pose.p - iniPos).magnitudeSquared() >= maxDist || lifeTime < 0)
+			return true;
+		else 
+			return false;
+	};
 
 private:
 	PxTransform pose;

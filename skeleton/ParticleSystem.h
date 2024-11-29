@@ -56,5 +56,7 @@ public:
 	int addBouyancyGenerator(float h, float v, float d);
 
 	int addAnchorGenerator(Vector3 pos, double k, double res);
+
+	void addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Rate);
 };
 

@@ -6,28 +6,39 @@ void ParticleSystem::update(double t) {
 	for(ParticleGenerator* g : particleGens)
 		g->generarParticulas(particles, t);
 		
-	for(RigidSolidGenerator* g : RSGens)
-		g->generateSR
+	for (RigidSolidGenerator* g : RSGens)
+		g->generateSR(rigidSolids, t);
 
-	auto it = particles.begin();
-	while (it != particles.end()) {
-		if ((*it)->isAlive()) {
+	auto it1 = particles.begin();
+	while (it1 != particles.end()) {
+		if ((*it1)->isAlive()) {
 			Vector3 totalForce = Vector3(0,0,0);
-			for (int i : *(*it)->getForceGenerator())
-				totalForce += forceGens[i]->getForce(*it);
-			(*it)->setAcceleration(totalForce / (*it)->getMasa());
-			(*it)->integrade(t);
-			++it;
+			for (int i : *(*it1)->getForceGenerator())
+				totalForce += forceGens[i]->getForce(*it1);
+			(*it1)->setAcceleration(totalForce / (*it1)->getMasa());
+			(*it1)->integrade(t);
+			++it1;
 		}
 		else {
-			auto aux = it;
-			++it;
+			auto aux = it1;
+			++it1;
 			delete *aux;
 			particles.erase(aux);
 		}
 	}
 
-
+	auto it2 = rigidSolids.begin();
+	while (it2 != rigidSolids.end()) {
+		if ((*it2)->isAlive()) {
+			(*it2)->integrade(t);
+		}
+		else {
+			auto aux = it2;
+			++it2;
+			delete* aux;
+			rigidSolids.erase(aux);
+		}
+	}
 }
 
 int ParticleSystem::addParticleGenerator(Vector3 pos, Vector3 minDir, Vector3 maxDir, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale, float Masa ,vector<int>* FGIndex) {
@@ -92,4 +103,8 @@ int ParticleSystem::addAnchorGenerator(Vector3 pos, double k, double res) {
 int ParticleSystem::addBouyancyGenerator(float h, float v ,float d) {
 	forceGens.push_back(new BouyancyForceGenerator(h, v, d));
 	return forceGens.size() - 1;
+}
+
+void ParticleSystem::addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Rate) {
+	RSGens.push_back(new RigidSolidGenerator(Pos, Color, Shape, Densidad, LifeTime, Radio, GScene, GPhysics, Rate));
 }
