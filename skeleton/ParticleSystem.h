@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include "Particle.h"
+#include "RigidSolid.h"
 #include "ParticleGenerator.h"
 #include "GravityGenerator.h"
 #include "WhirlWindGenerator.h"
@@ -8,6 +9,7 @@
 #include "AnchoredSpringFG.h"
 #include "ElasticForceGenerator.h"
 #include "BouyancyForceGenerator.h"
+#include "RigidSolidGenerator.h"
 
 using namespace std;
 
@@ -15,8 +17,10 @@ class ParticleSystem
 {
 private:
 	list<Particle*> particles;
+	list<RigidSolid*> rigidSolids;
 	vector<ParticleGenerator*> particleGens;
 	vector<ForceGenerator*> forceGens;
+	vector<RigidSolidGenerator*> RSGens;
 
 public:
 	~ParticleSystem() {

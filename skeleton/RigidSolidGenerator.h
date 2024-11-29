@@ -9,8 +9,8 @@ using namespace physx;
 class RigidSolidGenerator
 {
 public:
-	RigidSolidGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Timer) :
-		numRS(0), pos(Pos), color(Color), shape(Shape), densidad(Densidad), lifeTime(LifeTime), radio(Radio), gScene(GScene), gPhysics(GPhysics), timer(Timer) {}
+	RigidSolidGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Rate) :
+		numSR(0), pos(Pos), color(Color), shape(Shape), densidad(Densidad), lifeTime(LifeTime), radio(Radio), gScene(GScene), gPhysics(GPhysics), rate(Rate) {}
 
 	void generateSR(std::list<RigidSolid*>& list, double t);
 

@@ -6,6 +6,9 @@ void ParticleSystem::update(double t) {
 	for(ParticleGenerator* g : particleGens)
 		g->generarParticulas(particles, t);
 		
+	for(RigidSolidGenerator* g : RSGens)
+		g->generateSR
+
 	auto it = particles.begin();
 	while (it != particles.end()) {
 		if ((*it)->isAlive()) {
@@ -23,6 +26,7 @@ void ParticleSystem::update(double t) {
 			particles.erase(aux);
 		}
 	}
+
 
 }
 

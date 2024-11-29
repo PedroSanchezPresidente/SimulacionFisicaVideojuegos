@@ -6,7 +6,7 @@ using namespace physx;
 
 class RigidSolid {
 public:
-	RigidSolid(Vector3 Pos, Vector3 Color, PxShape* shape, float Densidad, float LifeTime, float maxDist, PxScene* gScene, PxPhysics* gPhysics) : iniPos(Pos), pose(Pos), lifeTime(LifeTime), masa(1), vel({ 0,0,0 }), acc({0,0,0}) {
+	RigidSolid(Vector3 Pos, Vector3 Color, PxShape* shape, float Densidad, float LifeTime, float MaxDist, PxScene* gScene, PxPhysics* gPhysics) : iniPos(Pos), pose(Pos), lifeTime(LifeTime), maxDist(MaxDist*MaxDist), masa(1), vel({0,0,0}), acc({0,0,0}) {
 
 		PxRigidDynamic* new_solid;
 		new_solid = gPhysics->createRigidDynamic(pose);
@@ -22,8 +22,9 @@ public:
 	void setVelocity(Vector3 v) { vel = v; }
 	void setAcceleration(Vector3 a) { acc = a; }
 	void setMass(float m) { masa = m; }
+	void integrade(double t) { lifeTime -= t; };
 
-	bool isAlive() {}
+	bool isAlive() { return (pose.p - iniPos).magnitudeSquared() >= maxDist || lifeTime < 0; };
 
 private:
 	PxTransform pose;
@@ -32,5 +33,6 @@ private:
 	Vector3 acc;
 	float masa;
 	float lifeTime;
+	float maxDist;
 	RenderItem* dynamic_item;
 };
