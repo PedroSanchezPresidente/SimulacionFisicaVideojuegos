@@ -31,6 +31,7 @@ void ParticleSystem::update(double t) {
 	while (it2 != rigidSolids.end()) {
 		if ((*it2)->isAlive()) {
 			(*it2)->integrade(t);
+			++it2;
 		}
 		else {
 			auto aux = it2;
@@ -105,6 +106,6 @@ int ParticleSystem::addBouyancyGenerator(float h, float v ,float d) {
 	return forceGens.size() - 1;
 }
 
-void ParticleSystem::addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Rate) {
+void ParticleSystem::addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics,float Rate) {
 	RSGens.push_back(new RigidSolidGenerator(Pos, Color, Shape, Densidad, LifeTime, Radio, GScene, GPhysics, Rate));
 }

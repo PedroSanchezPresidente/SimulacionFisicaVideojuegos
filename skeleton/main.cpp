@@ -46,7 +46,7 @@ std::vector<int>* v = new vector<int>;
 
 PxRigidStatic* Suelo;
 RenderItem* floor_i;
-std::vector<RigidSolid*> rigidSolids;
+std::vector<RigidSolid*> rigidSolids; RigidSolid* rs;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -130,7 +130,7 @@ void initPhysics(bool interactive)
 	shape = CreateShape(sphere);
 	float densidad = 2.f / 3.f * 2.f * 2.f * 2.f * 2.f;
 	//rigidSolids.push_back(new RigidSolid({ 0,1,0 }, {1,0,0}, shape, densidad , 100, gScene, gPhysics));
-	particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, densidad, 3, 50 ,gScene, gPhysics, 5);
+	particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, densidad, 3, 1 ,gScene, gPhysics, 5);
 	}
 
 
