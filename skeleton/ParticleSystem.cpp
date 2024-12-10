@@ -30,6 +30,10 @@ void ParticleSystem::update(double t) {
 	auto it2 = rigidSolids.begin();
 	while (it2 != rigidSolids.end()) {
 		if ((*it2)->isAlive()) {
+			Vector3 totalForce = Vector3(0, 0, 0);
+			for (int i : *(*it2)->getForceGenerator())
+				totalForce += forceGens[i]->getForce(*it2);
+			(*it1)->setAcceleration(totalForce / (*it2)->getMasa());
 			(*it2)->integrade(t);
 			++it2;
 		}
