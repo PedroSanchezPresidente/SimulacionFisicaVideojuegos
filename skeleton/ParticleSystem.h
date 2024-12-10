@@ -57,6 +57,6 @@ public:
 
 	int addAnchorGenerator(Vector3 pos, double k, double res);
 
-	void addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Rate);
+	void addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float masa, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Rate, std::vector<int>* index);
 };
 

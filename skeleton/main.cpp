@@ -11,7 +11,6 @@
 #include "Proyectil.h"
 #include "ParticleSystem.h"
 #include "RigidSolid.h"
-
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -128,9 +127,9 @@ void initPhysics(bool interactive)
 	PxSphereGeometry sphere;
 	sphere.radius = 2;
 	shape = CreateShape(sphere);
-	float densidad = 2.f / 3.f * 2.f * 2.f * 2.f * 2.f;
-	//rigidSolids.push_back(new RigidSolid({ 0,1,0 }, {1,0,0}, shape, densidad , 100, gScene, gPhysics));
-	particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, densidad, 3, 1 ,gScene, gPhysics, 5);
+	float densidad = 4.f / 3.f * 3.1416 * 4.f * 4.f * 4.f;
+	//rigidSolids.push_back(new RigidSolid({ 0,1,0 }, {1,0,0}, shape, densidad , 2 , 100, 1,gScene, gPhysics, v));
+	particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, 2/densidad, 2, 10, 1 ,gScene, gPhysics, 5, v);
 	}
 
 

@@ -10,7 +10,7 @@ public:
 
 	void setAcc(Vector3 acc) { _aceleracion = acc; };
 
-	virtual Vector3 getForce(Particle* particle) {
+	virtual Vector3 getForce(Object* particle) {
 		return particle->getMasa() * _aceleracion;
 	}
 };

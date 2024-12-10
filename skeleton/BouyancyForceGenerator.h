@@ -10,7 +10,7 @@ public:
 		_liquid_particle = new Particle({ 0,0,0 }, { 0,0,0 }, { 0,0,0 }, { 0,0,1 }, 1, sape, 100, 100);
 	}
 
-	virtual Vector3 getForce(Particle* p) {
+	virtual Vector3 getForce(Object* p) {
 		float h = p->getPos().y;
 		float h0 = _liquid_particle->getPos().y;
 

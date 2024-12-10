@@ -11,7 +11,7 @@ private:
 public:
 	ExplosionGenerator(Vector3 Pos, float K, float Radius) : ForceGenerator(Pos), k(K), radius(Radius*Radius) {};
 
-	virtual Vector3 getForce(Particle* particle) {
+	virtual Vector3 getForce(Object* particle) {
 		Vector3 force = particle->getPos() - pos;
 		if (radius < force.magnitudeSquared())
 			return Vector3(0, 0, 0);

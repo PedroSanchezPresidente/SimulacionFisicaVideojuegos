@@ -3,12 +3,12 @@
 
 class ElasticForceGenerator : public SpringForceGenerator{
 private:
-	Particle* _one;
+	Object* _one;
 
 public:
-	ElasticForceGenerator(double k, double resting_leng, Particle* other, Particle* one) : SpringForceGenerator(k, resting_leng, other), _one(one) {};
+	ElasticForceGenerator(double k, double resting_leng, Object* other, Object* one) : SpringForceGenerator(k, resting_leng, other), _one(one) {};
 
-	virtual Vector3 getForce(Particle* particle) {
+	virtual Vector3 getForce(Object* particle) {
 		if (_other == particle) {
 			_other = _one;
 			_one = particle;

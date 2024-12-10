@@ -10,7 +10,7 @@ private:
 public:
 	WhirlWindGenerator(Vector3 Pos, float Radius, float K) : radius(Radius* Radius), k(K), WindGenerator(Vector3(0,0,0), 1, 0, Pos){};
 
-	virtual Vector3 getForce(Particle* particle) {
+	virtual Vector3 getForce(Object* particle) {
 		wind = (particle->getPos() - pos);
 		if (radius < wind.magnitudeSquared())
 			return Vector3(0, 0, 0);

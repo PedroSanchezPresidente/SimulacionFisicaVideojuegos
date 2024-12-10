@@ -33,7 +33,7 @@ void ParticleSystem::update(double t) {
 			Vector3 totalForce = Vector3(0, 0, 0);
 			for (int i : *(*it2)->getForceGenerator())
 				totalForce += forceGens[i]->getForce(*it2);
-			(*it1)->setAcceleration(totalForce / (*it2)->getMasa());
+			(*it2)->addForce(totalForce);
 			(*it2)->integrade(t);
 			++it2;
 		}
@@ -110,6 +110,6 @@ int ParticleSystem::addBouyancyGenerator(float h, float v ,float d) {
 	return forceGens.size() - 1;
 }
 
-void ParticleSystem::addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics,float Rate) {
-	RSGens.push_back(new RigidSolidGenerator(Pos, Color, Shape, Densidad, LifeTime, Radio, GScene, GPhysics, Rate));
+void ParticleSystem::addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float Masa, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics,float Rate, std::vector<int>* index) {
+	RSGens.push_back(new RigidSolidGenerator(Pos, Color, Shape, Densidad, Masa, LifeTime, Radio, GScene, GPhysics, Rate, index));
 }

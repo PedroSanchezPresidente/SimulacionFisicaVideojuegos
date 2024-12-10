@@ -1,5 +1,5 @@
 #pragma once
-#include "Particle.h"
+#include "Object.h"
 
 enum ForceGeneratorTipe { GRAVITY, WIND, WHIRLWIND, EXPLOSION };
 
@@ -11,6 +11,6 @@ protected:
 public:
 	ForceGenerator(Vector3 Pos) : pos(Pos){};
 
-	virtual Vector3 getForce(Particle* p) = 0;
+	virtual Vector3 getForce(Object* p) = 0;
 };
 
