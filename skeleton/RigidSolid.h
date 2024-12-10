@@ -1,12 +1,13 @@
 #pragma once
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
+#include <vector>
 
 using namespace physx;
 
 class RigidSolid {
 public:
-	RigidSolid(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float MaxDist, PxScene* gScene, PxPhysics* gPhysics) : iniPos(Pos), pose(Pos), lifeTime(LifeTime), maxDist(MaxDist*MaxDist), masa(1), vel({0,0,0}), acc({0,0,0}), scene(gScene), shape(Shape) {
+	RigidSolid(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float LifeTime, float MaxDist, PxScene* gScene, PxPhysics* gPhysics, std::vector<int>* FGIndex = new std::vector<int>, ) : iniPos(Pos), pose(Pos), lifeTime(LifeTime), maxDist(MaxDist*MaxDist), masa(1), vel({0,0,0}), acc({0,0,0}), scene(gScene), shape(Shape), forceGeneratorsIndex(FGIndex) {
 
 		new_solid = gPhysics->createRigidDynamic(pose);
 		new_solid->setLinearVelocity(vel);
@@ -51,4 +52,5 @@ private:
 	PxRigidDynamic* new_solid;
 	PxScene* scene;
 	PxShape* shape;
+	std::vector<int>* forceGeneratorsIndex;
 };
