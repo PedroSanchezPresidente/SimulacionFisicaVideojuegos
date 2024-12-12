@@ -43,9 +43,46 @@ std::vector<Proyectil*> proyectiles;
 std::vector<Particle*> particles;
 std::vector<int>* v = new vector<int>;
 
-PxRigidStatic* Suelo;
-RenderItem* floor_i;
+vector<PxRigidStatic*> mapa;
+vector<RenderItem*> mapa_i;
 std::vector<RigidSolid*> rigidSolids; RigidSolid* rs;
+
+void createMap() {
+	PxRigidStatic* Suelo = gPhysics->createRigidStatic({ -400,0,0 });
+	PxShape* shape = CreateShape(PxBoxGeometry(500, 0.1, 100));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	mapa_i.push_back(new RenderItem(shape, Suelo, { 0, 0.2, 0, 1 }));
+	mapa.push_back(Suelo);
+
+	Suelo = gPhysics->createRigidStatic({ -400,0,100 });
+	shape = CreateShape(PxBoxGeometry(500, 50, 0.1));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
+	mapa.push_back(Suelo);
+
+	Suelo = gPhysics->createRigidStatic({ -400,0,-100 });
+	shape = CreateShape(PxBoxGeometry(500, 50, 0.1));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
+	mapa.push_back(Suelo);
+
+	Suelo = gPhysics->createRigidStatic({ 100,0,0 });
+	shape = CreateShape(PxBoxGeometry(0.1, 50, 100));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
+	mapa.push_back(Suelo);
+
+	Suelo = gPhysics->createRigidStatic({ -900,0,0 });
+	shape = CreateShape(PxBoxGeometry(0.1, 50, 100));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
+	mapa.push_back(Suelo);
+}
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -73,7 +110,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	//Geometria de esfera
-	PxSphereGeometry s;
+	/*PxSphereGeometry s;
 	s.radius = 1;
 
 	esferaX = new RenderItem;
@@ -96,7 +133,7 @@ void initPhysics(bool interactive)
 	esferaZ->transform = new PxTransform(PxVec3(v3.x, v3.y, v3.z));
 	esferaZ->color = Vector4(0, 0, 1.0, 1.0);
 	esferaZ->shape = CreateShape(s);
-	RegisterRenderItem(esferaZ);
+	RegisterRenderItem(esferaZ);*/
 
 	particleSystem = new ParticleSystem();
 
@@ -118,15 +155,11 @@ void initPhysics(bool interactive)
 	//v->push_back(particleSystem->addBouyancyGenerator(0.5, 4.19, 1));
 	//v->push_back(particleSystem->addForceGenerator(GRAVITY, {0,-9.8,0}));
 
-	Suelo = gPhysics->createRigidStatic({0,0,0});
-	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
-	Suelo->attachShape(*shape);
-	gScene->addActor(*Suelo);
-	floor_i = new RenderItem(shape, Suelo, {0.8,0.8,0.8,1});
+	createMap();
 
 	PxSphereGeometry sphere;
 	sphere.radius = 2;
-	shape = CreateShape(sphere);
+	PxShape* shape = CreateShape(sphere);
 	float densidad = 4.f / 3.f * 3.1416 * 4.f * 4.f * 4.f;
 	//rigidSolids.push_back(new RigidSolid({ 0,1,0 }, {1,0,0}, shape, densidad , 2 , 100, 1,gScene, gPhysics, v));
 	particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, 2/densidad, 2, 10, 1 ,gScene, gPhysics, 5, v);
@@ -166,9 +199,9 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	DeregisterRenderItem(esferaX);
+	/*DeregisterRenderItem(esferaX);
 	DeregisterRenderItem(esferaY);
-	DeregisterRenderItem(esferaZ);
+	DeregisterRenderItem(esferaZ);*/
 
 	for(int i = 0; i < proyectiles.size(); i ++)
 		delete proyectiles[i];
@@ -180,7 +213,8 @@ void cleanupPhysics(bool interactive)
 		delete s;
 	rigidSolids.clear();
 
-	DeregisterRenderItem(floor_i);
+	for(RenderItem* i : mapa_i)
+		DeregisterRenderItem(i);
 }
 
 // Function called when a key is pressed
