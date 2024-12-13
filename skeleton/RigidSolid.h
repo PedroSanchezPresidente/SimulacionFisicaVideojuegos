@@ -36,6 +36,8 @@ public:
 	void integrade(double t) { lifeTime -= t; };
 	std::vector<int>* getForceGenerator() const { return forceGeneratorsIndex; };
 	void addForce(Vector3 f) { new_solid->addForce(f); };
+	virtual Vector3 getPos() { return new_solid->getGlobalPose().p; };
+	
 
 	bool isAlive() { 
 		if (lifeTime < 0 || (pose.p - posIni).magnitudeSquared() > radio)

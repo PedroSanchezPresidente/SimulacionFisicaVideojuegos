@@ -33,19 +33,17 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-RenderItem* esferaX;
-RenderItem* esferaY;
-RenderItem* esferaZ;
-
 ParticleSystem* particleSystem;
 
 std::vector<Proyectil*> proyectiles;
 std::vector<Particle*> particles;
-std::vector<int>* v = new vector<int>;
+std::vector<int>* fuerzas = new vector<int>;
 
 vector<PxRigidStatic*> mapa;
 vector<RenderItem*> mapa_i;
-std::vector<RigidSolid*> rigidSolids; RigidSolid* rs;
+RigidSolid* pelota;
+
+extern void setCamPos(Vector3 pos);
 
 void createMap() {
 	PxRigidStatic* Suelo = gPhysics->createRigidStatic({ -400,0,0 });
@@ -82,6 +80,13 @@ void createMap() {
 	gScene->addActor(*Suelo);
 	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
 	mapa.push_back(Suelo);
+
+	int i = particleSystem->addBouyancyGenerator(2, 50, 100, 4.f / 3.f * 3.1416 * 2.f * 2.f * 2.f, 1, { -100,2,0 });
+
+	fuerzas->push_back(i);
+
+	int i = particleSystem->addForceGenerator(ForceGeneratorTipe::WHIRLWIND, {-700,0,0}, 1, 40);
+	particleSystem->addParticleGenerator({-700}, ,);
 }
 
 // Initialize physics engine
@@ -109,32 +114,6 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	//Geometria de esfera
-	/*PxSphereGeometry s;
-	s.radius = 1;
-
-	esferaX = new RenderItem;
-	Vector3D v1(10, 0, 0);
-	esferaX->transform = new PxTransform(PxVec3(v1.x, v1.y, v1.z));
-	esferaX->color = Vector4(1.0, 0, 0, 1.0);
-	esferaX->shape = CreateShape(s);
-	RegisterRenderItem(esferaX);
-
-	esferaY = new RenderItem;
-	Vector3D v2(0, 10, 0);
-	esferaY->transform = new PxTransform(PxVec3(v2.x, v2.y, v2.z));
-	esferaY->color = Vector4(0, 1.0, 0, 1.0);
-	esferaY->shape = CreateShape(s);
-	RegisterRenderItem(esferaY);
-
-	esferaZ = new RenderItem;
-	Vector3D v3 = v1 * v2;
-	v3 = v3.normalize() * 10;
-	esferaZ->transform = new PxTransform(PxVec3(v3.x, v3.y, v3.z));
-	esferaZ->color = Vector4(0, 0, 1.0, 1.0);
-	esferaZ->shape = CreateShape(s);
-	RegisterRenderItem(esferaZ);*/
-
 	particleSystem = new ParticleSystem();
 
 	//particleSystem->generateParticle(Vector3(0, -20, 15), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
@@ -160,9 +139,12 @@ void initPhysics(bool interactive)
 	PxSphereGeometry sphere;
 	sphere.radius = 2;
 	PxShape* shape = CreateShape(sphere);
-	float densidad = 4.f / 3.f * 3.1416 * 4.f * 4.f * 4.f;
+	float densidad = 4.f / 3.f * 3.1416 * 2.f * 2.f * 2.f;
 	//rigidSolids.push_back(new RigidSolid({ 0,1,0 }, {1,0,0}, shape, densidad , 2 , 100, 1,gScene, gPhysics, v));
-	particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, 2/densidad, 2, 10, 1 ,gScene, gPhysics, 5, v);
+	//particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, 2/densidad, 2, 10, 1 ,gScene, gPhysics, 5, fuerzas);
+	pelota = particleSystem->generateRs({ 0,2,0 }, { 1,0,0 }, shape, 2 / densidad, 2, 10000, 100000, gScene, gPhysics, fuerzas);
+	setCamPos(pelota->getPos());
+
 	}
 
 
@@ -180,6 +162,8 @@ void stepPhysics(bool interactive, double t)
 		proyectiles[i]->integrade(t);
 
 	particleSystem->update(t);
+
+	setCamPos(pelota->getPos());
 }
 
 // Function to clean data
@@ -187,6 +171,8 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
+
+	delete pelota;
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -199,19 +185,12 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	/*DeregisterRenderItem(esferaX);
-	DeregisterRenderItem(esferaY);
-	DeregisterRenderItem(esferaZ);*/
-
 	for(int i = 0; i < proyectiles.size(); i ++)
 		delete proyectiles[i];
 	proyectiles.clear();
 
-	delete particleSystem;
 
-	for (RigidSolid* s : rigidSolids)
-		delete s;
-	rigidSolids.clear();
+	delete particleSystem;
 
 	for(RenderItem* i : mapa_i)
 		DeregisterRenderItem(i);
@@ -224,27 +203,17 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	int index;
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
-	case ' ':
-	{
-		PxSphereGeometry s;
-		s.radius = 1;
-		PxShape* shape = CreateShape(s);
-		proyectiles.push_back(new Proyectil(camera.p, GetCamera()->getDir() * 10, Vector3(0, 0, 0), shape, Vector3(38,0,0)));
+	case 'W':
+		pelota->addForce({-100,0,0});
 		break;
-	}
-	case 'V':
-		index = particleSystem->addForceGenerator(WIND, Vector3(0, 0, -10), 0.3);
-		v->push_back(index);
+	case 'S':
+		pelota->addForce({ 100,0,0 });
 		break;
-	case 'B':
-		index = particleSystem->addForceGenerator(WHIRLWIND, Vector3(0, 0, 0), 3, 100);
-		v->push_back(index);
+	case 'A':
+		pelota->addForce({ 0,0,100 });
 		break;
-	case 'E':
-		index = particleSystem->addForceGenerator(EXPLOSION, Vector3(0, 0, 0), 5000000, 1000);
-		v->push_back(index);
+	case 'D':
+		pelota->addForce({ 0,0,-100 });
 		break;
 	default:
 		break;

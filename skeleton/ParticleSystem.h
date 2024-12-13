@@ -45,7 +45,7 @@ public:
 
 	void asociateForceGenerator(int ParticleGeneratorIndex, int ForceGeneratorIndex);
 
-	Particle* generateParticle(Vector3 pos, Vector3 vel, Vector3 color, float lifeTime, float radius, float masa, std::vector<int>* index);
+	Particle* generateParticle(Vector3 pos, Vector3 vel, Vector3 color, PxShape* shape, float lifeTime, float radius, float masa, std::vector<int>* index);
 
 	void asociateForceGeneratorToAll(int ForceGeneratorIndex);
 
@@ -53,10 +53,12 @@ public:
 
 	int addElasticGenerator(Particle* p1, double k, double res, Particle* p2);
 
-	int addBouyancyGenerator(float h, float v, float d);
+	int addBouyancyGenerator(float h, float w, float de, float v, float d, Vector3 Pos);
 
 	int addAnchorGenerator(Vector3 pos, double k, double res);
 
 	void addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float masa, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, float Rate, std::vector<int>* index);
+
+	RigidSolid* generateRs(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float Masa, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, std::vector<int>* index);
 };
 

@@ -20,6 +20,7 @@ std::vector<const RenderItem*> gRenderItems;
 double PCFreq = 0.0;
 __int64 CounterStart = 0;
 __int64 CounterLast = 0;
+Vector3 posPelota;
 
 void StartCounter()
 {
@@ -93,6 +94,7 @@ void renderCallback()
 	}
 #else
 	stepPhysics(true, t);
+	sCamera->setTransform(posPelota);
 #endif
 
 	startRender(sCamera->getEye(), sCamera->getDir());
@@ -137,7 +139,7 @@ void exitCallback(void)
 void renderLoop()
 {
 	StartCounter();
-	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
+	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.6f,-0.0f));
 
 	setupDefaultWindow("Simulacion Fisica Videojuegos");
 	setupDefaultRenderState();
@@ -146,7 +148,7 @@ void renderLoop()
 	glutDisplayFunc(renderCallback);
 	glutKeyboardFunc(keyboardCallback);
 	glutMouseFunc(mouseCallback);
-	glutMotionFunc(motionCallback);
+	//glutMotionFunc(motionCallback);
 	motionCallback(0,0);
 
 	atexit(exitCallback);
@@ -184,4 +186,8 @@ PxShape* CreateShape(const PxGeometry& geo, const PxMaterial* mat)
 
 	PxShape* shape = gPhysics->createShape(geo, *mat);
 	return shape;
+}
+
+void setCamPos(Vector3 pos) {
+	posPelota = pos;
 }

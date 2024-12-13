@@ -65,10 +65,8 @@ void ParticleSystem::asociateForceGeneratorToAll(int ForceGeneratorIndex) {
 		g->addForceGenerator(ForceGeneratorIndex);
 }
 
-Particle* ParticleSystem::generateParticle(Vector3 pos, Vector3 vel, Vector3 color, float lifeTime, float radius, float masa, std::vector<int>* index) {
-	PxSphereGeometry s;
-	s.radius = 1;
-	Particle* p = new Particle(pos, vel, Vector3(1, 1, 1), color, 1, CreateShape(s), lifeTime, radius, masa, index);
+Particle* ParticleSystem::generateParticle(Vector3 pos, Vector3 vel, Vector3 color, PxShape* shape, float lifeTime, float radius, float masa, std::vector<int>* index) {
+	Particle* p = new Particle(pos, vel, Vector3(1, 1, 1), color, 1, shape, lifeTime, radius, masa, index);
 	particles.push_back(p);
 	return p;
 }
@@ -105,11 +103,19 @@ int ParticleSystem::addAnchorGenerator(Vector3 pos, double k, double res) {
 	return forceGens.size() - 1;
 }
 
-int ParticleSystem::addBouyancyGenerator(float h, float v ,float d) {
-	forceGens.push_back(new BouyancyForceGenerator(h, v, d));
+int ParticleSystem::addBouyancyGenerator(float h, float w, float de, float v ,float d, Vector3 Pos) {
+	forceGens.push_back(new BouyancyForceGenerator(h, w, de, v, d, Pos));
 	return forceGens.size() - 1;
 }
 
 void ParticleSystem::addRSGenerator(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float Masa, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics,float Rate, std::vector<int>* index) {
 	RSGens.push_back(new RigidSolidGenerator(Pos, Color, Shape, Densidad, Masa, LifeTime, Radio, GScene, GPhysics, Rate, index));
+}
+
+RigidSolid* ParticleSystem::generateRs(Vector3 Pos, Vector3 Color, PxShape* Shape, float Densidad, float Masa, float LifeTime, float Radio, PxScene* GScene, PxPhysics* GPhysics, std::vector<int>* index) {
+	PxSphereGeometry s;
+	s.radius = 1;
+	RigidSolid* p = new RigidSolid(Pos, Color, Shape, Densidad, Masa, LifeTime, Radio, GScene, GPhysics, index);
+	rigidSolids.push_back(p);
+	return p;
 }
