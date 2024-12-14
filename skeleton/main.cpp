@@ -37,11 +37,14 @@ ParticleSystem* particleSystem;
 
 std::vector<Proyectil*> proyectiles;
 std::vector<Particle*> particles;
-std::vector<int>* fuerzas = new vector<int>;
+std::vector<int>* fuerzas_p = new vector<int>;
+std::vector<int>* fuerzas_t = new vector<int>;
 
 vector<PxRigidStatic*> mapa;
 vector<RenderItem*> mapa_i;
 RigidSolid* pelota;
+vector<RigidSolid*> obstaculos;
+
 
 extern void setCamPos(Vector3 pos);
 
@@ -54,28 +57,28 @@ void createMap() {
 	mapa.push_back(Suelo);
 
 	Suelo = gPhysics->createRigidStatic({ -400,0,100 });
-	shape = CreateShape(PxBoxGeometry(500, 50, 0.1));
+	shape = CreateShape(PxBoxGeometry(500, 30, 0.1));
 	Suelo->attachShape(*shape);
 	gScene->addActor(*Suelo);
 	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
 	mapa.push_back(Suelo);
 
 	Suelo = gPhysics->createRigidStatic({ -400,0,-100 });
-	shape = CreateShape(PxBoxGeometry(500, 50, 0.1));
+	shape = CreateShape(PxBoxGeometry(500, 30, 0.1));
 	Suelo->attachShape(*shape);
 	gScene->addActor(*Suelo);
 	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
 	mapa.push_back(Suelo);
 
 	Suelo = gPhysics->createRigidStatic({ 100,0,0 });
-	shape = CreateShape(PxBoxGeometry(0.1, 50, 100));
+	shape = CreateShape(PxBoxGeometry(0.1, 10, 100));
 	Suelo->attachShape(*shape);
 	gScene->addActor(*Suelo);
 	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
 	mapa.push_back(Suelo);
 
 	Suelo = gPhysics->createRigidStatic({ -900,0,0 });
-	shape = CreateShape(PxBoxGeometry(0.1, 50, 100));
+	shape = CreateShape(PxBoxGeometry(0.1, 30, 100));
 	Suelo->attachShape(*shape);
 	gScene->addActor(*Suelo);
 	mapa_i.push_back(new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 }));
@@ -83,10 +86,29 @@ void createMap() {
 
 	int i = particleSystem->addBouyancyGenerator(2, 50, 100, 4.f / 3.f * 3.1416 * 2.f * 2.f * 2.f, 1, { -100,2,0 });
 
-	fuerzas->push_back(i);
+	fuerzas_p->push_back(i);
 
-	int i = particleSystem->addForceGenerator(ForceGeneratorTipe::WHIRLWIND, {-700,0,0}, 1, 40);
-	particleSystem->addParticleGenerator({-700}, ,);
+	i = particleSystem->addForceGenerator(ForceGeneratorTipe::WHIRLWIND, {-700,0,0}, 1, 40);
+	fuerzas_t->push_back(i);
+	fuerzas_p->push_back(i);
+	particleSystem->addParticleGenerator(Vector3(-700, 0, 0), 0, Vector3(10, 0.1, 10), 90, 10, 10, Vector3(1, 1, 0), 1, Vector3(1, 1, 1), 2, fuerzas_t);
+
+	i = particleSystem->addForceGenerator(ForceGeneratorTipe::WIND, { 0,0,30 }, 1, 25, {-500,10,-100});
+	fuerzas_p->push_back(i);
+	particleSystem->addParticleGenerator(Vector3(-500, 10, -100), Vector3(-3, -3, 20), Vector3(3, 3, 40), 200, 10, 50, Vector3(0, 0, 1), 5, Vector3(1, 1, 1), 1);
+
+	PxBoxGeometry box;
+	box.halfExtents = { 2,2,4 };
+	shape = CreateShape(box);
+	float masa = 1;
+	float volumen = 4.f * 2.f * 2.f;
+	obstaculos.push_back(particleSystem->generateRs({ -200,2,50 }, { 1,1,1 }, shape, masa / volumen, masa, 10000, 100000, gScene, gPhysics, fuerzas_p));
+	obstaculos.push_back(particleSystem->generateRs({ -249,2,27 }, { 1,1,1 }, shape, masa / volumen, masa, 10000, 100000, gScene, gPhysics, fuerzas_p));
+	obstaculos.push_back(particleSystem->generateRs({ -293,2,-72 }, { 1,1,1 }, shape, masa / volumen, masa, 10000, 100000, gScene, gPhysics, fuerzas_p));
+	obstaculos.push_back(particleSystem->generateRs({ -223,2,-7 }, { 1,1,1 }, shape, masa / volumen, masa, 10000, 100000, gScene, gPhysics, fuerzas_p));
+	obstaculos.push_back(particleSystem->generateRs({ -323,2,30 }, { 1,1,1 }, shape, masa / volumen, masa, 10000, 100000, gScene, gPhysics, fuerzas_p));
+	obstaculos.push_back(particleSystem->generateRs({ -364,2,-42 }, { 1,1,1 }, shape, masa / volumen, masa, 10000, 100000, gScene, gPhysics, fuerzas_p));
+	obstaculos.push_back(particleSystem->generateRs({ -293,2,-21 }, { 1,1,1 }, shape, masa / volumen, masa, 10000, 100000, gScene, gPhysics, fuerzas_p));
 }
 
 // Initialize physics engine
@@ -116,37 +138,21 @@ void initPhysics(bool interactive)
 
 	particleSystem = new ParticleSystem();
 
-	//particleSystem->generateParticle(Vector3(0, -20, 15), Vector3(0, 0, 0), Vector3(1, 1, 1), 100.f, 1000.f, 1.f, v);
-
-
-	//int index = particleSystem->addAnchorGenerator({0,0,15}, 1, 10);
-	//v->push_back(index);
-
-	//std::vector<int>* aux = new std::vector<int>;
-
-	//Particle* p1 = particleSystem->generateParticle(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0), 100.f, 1000.f, 1.f, aux);
-	//Particle* p2 = particleSystem->generateParticle(Vector3(5, 0, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 1.f, aux);
-
-	//aux->push_back(particleSystem->addElasticGenerator(p1, 1, 2, p2));
-
-
-	//particleSystem->generateParticle(Vector3(0, 5, 0), Vector3(0, 0, 0), Vector3(1, 0, 0), 100.f, 1000.f, 2.5, v);
-	//v->push_back(particleSystem->addBouyancyGenerator(0.5, 4.19, 1));
-	//v->push_back(particleSystem->addForceGenerator(GRAVITY, {0,-9.8,0}));
-
 	createMap();
 
 	PxSphereGeometry sphere;
 	sphere.radius = 2;
 	PxShape* shape = CreateShape(sphere);
-	float densidad = 4.f / 3.f * 3.1416 * 2.f * 2.f * 2.f;
-	//rigidSolids.push_back(new RigidSolid({ 0,1,0 }, {1,0,0}, shape, densidad , 2 , 100, 1,gScene, gPhysics, v));
-	//particleSystem->addRSGenerator({ 0,20,0 }, { 1,0,0 }, shape, 2/densidad, 2, 10, 1 ,gScene, gPhysics, 5, fuerzas);
-	pelota = particleSystem->generateRs({ 0,2,0 }, { 1,0,0 }, shape, 2 / densidad, 2, 10000, 100000, gScene, gPhysics, fuerzas);
+	float volumen = 4.f / 3.f * 3.1416 * 2.f * 2.f * 2.f;
+	pelota = particleSystem->generateRs({ 0,2,0 }, { 1,0,0 }, shape, 2 / volumen, 2, 10000, 100000, gScene, gPhysics, fuerzas_p);
 	setCamPos(pelota->getPos());
-
 	}
 
+void reset() {
+	for (RigidSolid* r : obstaculos)
+		r->reset();
+	pelota->reset();
+}
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
@@ -172,7 +178,7 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
-	delete pelota;
+	delete particleSystem;
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -188,9 +194,6 @@ void cleanupPhysics(bool interactive)
 	for(int i = 0; i < proyectiles.size(); i ++)
 		delete proyectiles[i];
 	proyectiles.clear();
-
-
-	delete particleSystem;
 
 	for(RenderItem* i : mapa_i)
 		DeregisterRenderItem(i);
@@ -214,6 +217,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case 'D':
 		pelota->addForce({ 0,0,-100 });
+		break;
+	case 'R':
+		reset();
 		break;
 	default:
 		break;

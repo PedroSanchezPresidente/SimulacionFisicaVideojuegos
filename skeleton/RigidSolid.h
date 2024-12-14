@@ -18,9 +18,6 @@ public:
 		gScene->addActor(*new_solid);
 
 		renderItem = new RenderItem(shape, new_solid, {Color, 1});
-		/*dynamic_item->shape = shape;
-		dynamic_item->actor = new_solid;
-		dynamic_item->color = { Color, 1 };*/
 	}
 
 	virtual ~RigidSolid() {
@@ -37,6 +34,7 @@ public:
 	std::vector<int>* getForceGenerator() const { return forceGeneratorsIndex; };
 	void addForce(Vector3 f) { new_solid->addForce(f); };
 	virtual Vector3 getPos() { return new_solid->getGlobalPose().p; };
+	void reset() { new_solid->getGlobalPose().p = posIni; };
 	
 
 	bool isAlive() { 

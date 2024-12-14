@@ -35,6 +35,14 @@ public:
 		for (ForceGenerator* g : forceGens)
 			delete g;
 		forceGens.clear();
+
+		for (RigidSolid* r : rigidSolids)
+			delete r;
+		rigidSolids.clear();
+
+		for (RigidSolidGenerator* g : RSGens)
+			delete g;
+		RSGens.clear();
 	}
 
 	void update(double t);
@@ -49,7 +57,7 @@ public:
 
 	void asociateForceGeneratorToAll(int ForceGeneratorIndex);
 
-	int addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k = 1, float Radius = 0);
+	int addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k = 1, float Radius = 0, Vector3 Pos = Vector3(0,0,0));
 
 	int addElasticGenerator(Particle* p1, double k, double res, Particle* p2);
 

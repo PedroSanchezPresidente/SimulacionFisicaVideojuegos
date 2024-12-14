@@ -47,12 +47,12 @@ void ParticleSystem::update(double t) {
 }
 
 int ParticleSystem::addParticleGenerator(Vector3 pos, Vector3 minDir, Vector3 maxDir, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale, float Masa ,vector<int>* FGIndex) {
-	particleGens.push_back(new ParticleGenerator(pos, minDir, maxDir, radio,lifeTime, ratio, color, transparencia, scale));
+	particleGens.push_back(new ParticleGenerator(pos, minDir, maxDir, radio,lifeTime, ratio, color, transparencia, scale, Masa, FGIndex));
 	return particleGens.size() - 1;
 }
 
 int ParticleSystem::addParticleGenerator(Vector3 pos, float mean, Vector3 dev, float radio, float lifeTime, float ratio, Vector3 color, float transparencia, Vector3 scale, float Masa, vector<int>* FGIndex) {
-	particleGens.push_back(new ParticleGenerator(pos, mean, dev, radio, lifeTime, ratio, color, transparencia, scale));
+	particleGens.push_back(new ParticleGenerator(pos, mean, dev, radio, lifeTime, ratio, color, transparencia, scale, Masa, FGIndex));
 	return particleGens.size() - 1;
 }
 
@@ -71,14 +71,14 @@ Particle* ParticleSystem::generateParticle(Vector3 pos, Vector3 vel, Vector3 col
 	return p;
 }
 
-int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k, float Radius) {
+int ParticleSystem::addForceGenerator(ForceGeneratorTipe tipe, Vector3 force, float k, float Radius, Vector3 Pos) {
 	switch (tipe)
 	{
 	case GRAVITY:
 		forceGens.push_back(new GravityGenerator(force));
 		break;
 	case WIND:
-		forceGens.push_back(new WindGenerator(force, k));
+		forceGens.push_back(new WindGenerator(force, k, 0, Pos, {Radius, Radius, 200}));
 		break;
 	case WHIRLWIND:
 		forceGens.push_back(new WhirlWindGenerator(force, Radius, k));
