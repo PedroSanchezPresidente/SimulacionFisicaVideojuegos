@@ -1,8 +1,12 @@
-# SimulacionFisicaVideojuegos
-Repositorio de las prácticas de la asignatura de Simulación Física de Videojuegos
+Objetivo del juego:
 
-En la carpeta skeleton estará vuestro código fuente
+Avanzar hasta el final evitando los obstáculos.
 
-Necesitaréis además descomprimir el archivo que se indica a continuación en la raíz del repositorio:
+Controles:
 
-Carpetas bin y common https://ucomplutense-my.sharepoint.com/:f:/g/personal/liagar05_ucm_es/ElNxHPmZVj9Ni9-8FKTKp7cBJHAarnL3vvEvG50z0QMrzg
+W para avanzar.
+S para retroceder o decelerar.
+A para avanzar hacia la izquierda.
+D para avanzar hacia la derecha.
+
+*Los controles son un poco toscos ya que mueve la pelota aplicando una fuerza en esa dirección y si se presiona 2 teclas a la vez puede que no lo pille bien*
