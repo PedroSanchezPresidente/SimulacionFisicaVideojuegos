@@ -18,6 +18,9 @@ public:
 		gScene->addActor(*new_solid);
 
 		renderItem = new RenderItem(shape, new_solid, {Color, 1});
+
+		if (LifeTime == 0)
+			immortal = true;
 	}
 
 	virtual ~RigidSolid() {
@@ -30,14 +33,20 @@ public:
 	void setAcceleration(Vector3 a) { acc = a; }
 	void setMasa(float m) { masa = m; }
 	float getMasa() { return masa; }
-	void integrade(double t) { lifeTime -= t; };
+	void integrade(double t) {if(!immortal) lifeTime -= t; };
 	std::vector<int>* getForceGenerator() const { return forceGeneratorsIndex; };
 	void addForce(Vector3 f) { new_solid->addForce(f); };
 	virtual Vector3 getPos() { return new_solid->getGlobalPose().p; };
-	void reset() { new_solid->getGlobalPose().p = posIni; };
+	void reset() { 
+		new_solid->setGlobalPose(pose);
+		new_solid->setLinearVelocity(PxVec3(0.0f, 0.0f, 0.0f));
+		new_solid->setAngularVelocity(PxVec3(0.0f, 0.0f, 0.0f));
+	};
 	
 
 	bool isAlive() { 
+		if (!immortal)
+			return true;
 		if (lifeTime < 0 || (pose.p - posIni).magnitudeSquared() > radio)
 			return false;
 		else
@@ -48,4 +57,5 @@ private:
 	PxRigidDynamic* new_solid;
 	PxScene* scene;
 	PxShape* shape;
+	bool immortal = false;
 };
